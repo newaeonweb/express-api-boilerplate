@@ -3,7 +3,7 @@
 # http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 
 FROM       ubuntu:latest
-MAINTAINER Docker
+MAINTAINER Fernando Monteiro, fernando@newaeonweb.com.br
 
 # Installation:
 
