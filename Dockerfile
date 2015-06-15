@@ -12,7 +12,7 @@ RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv 7F0CEB10
 RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
 
 # Update apt-get sources AND install MongoDB
-RUN apt-get update && apt-get install -y mongodb-org && apt-get install nodejs && apt-get install nodejs-legacy && apt-get install npm
+RUN apt-get update && apt-get install -y mongodb-org
 
 # Create the MongoDB data directory
 RUN mkdir -p /data/db
@@ -22,3 +22,18 @@ EXPOSE 27017
 
 # Set /usr/bin/mongod as the dockerized entry-point application
 ENTRYPOINT ["/usr/bin/mongod"]
+
+
+RUN apt-get install nodejs && apt-get install nodejs-legacy && apt-get install npm && apt-get git && npm install -g grunt-cli
+
+RUN git clone https://github.com/newaeonweb/express-api-boilerplate.git && cd express-api-boilerplate
+
+WORKDIR /home/express-api-boilerplate
+
+# Make everything available for start
+ADD . /home/frontendboilerplate
+
+# Port 3000 for server
+# Port 35729 for livereload
+EXPOSE 3000 35729
+CMD ["grunt"]
