@@ -27,8 +27,6 @@ RUN apt-get install nodejs
 RUN apt-get install nodejs-legacy
 RUN apt-get install npm
 RUN apt-get git
-RUN npm install -g grunt-cli
-RUN git clone https://github.com/newaeonweb/express-api-boilerplate.git && cd express-api-boilerplate
 
 WORKDIR /home/express-api-boilerplate
 
@@ -38,4 +36,3 @@ ADD . /home/frontendboilerplate
 # Port 3000 for server
 # Port 35729 for livereload
 EXPOSE 3000 35729
-CMD ["grunt"]
