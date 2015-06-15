@@ -23,9 +23,11 @@ EXPOSE 27017
 # Set /usr/bin/mongod as the dockerized entry-point application
 ENTRYPOINT ["/usr/bin/mongod"]
 
-
-RUN apt-get install nodejs && apt-get install nodejs-legacy && apt-get install npm && apt-get git && npm install -g grunt-cli
-
+RUN apt-get install nodejs
+RUN apt-get install nodejs-legacy
+RUN apt-get install npm
+RUN apt-get git
+RUN npm install -g grunt-cli
 RUN git clone https://github.com/newaeonweb/express-api-boilerplate.git && cd express-api-boilerplate
 
 WORKDIR /home/express-api-boilerplate
