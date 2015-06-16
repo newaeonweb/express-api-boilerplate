@@ -25,8 +25,7 @@ ENTRYPOINT ["/usr/bin/mongod"]
 
 RUN apt-get install -y nodejs
 RUN apt-get install nodejs-legacy
-RUN apt-get install npm
-RUN apt-get git
+RUN apt-get install -y npm
 
 WORKDIR /home/express-api-boilerplate
 
