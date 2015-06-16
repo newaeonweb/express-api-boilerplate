@@ -29,6 +29,10 @@ RUN apt-get install -y npm
 
 WORKDIR /home/express-api-boilerplate
 
+# Install packages
+ADD package.json /home/express-api-boilerplate/package.json
+RUN npm install
+
 # Make everything available for start
 ADD . /home/express-api-boilerplate
 
@@ -36,4 +40,4 @@ ADD . /home/express-api-boilerplate
 # Port 35729 for livereload
 EXPOSE 3000 35729
 
-CMD ["npm start"]
+CMD ["nodemon serve"]
