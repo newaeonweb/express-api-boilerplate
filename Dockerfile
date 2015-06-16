@@ -23,7 +23,7 @@ EXPOSE 27017
 # Set /usr/bin/mongod as the dockerized entry-point application
 ENTRYPOINT ["/usr/bin/mongod"]
 
-RUN apt-get install nodejs
+RUN apt-get install -y nodejs
 RUN apt-get install nodejs-legacy
 RUN apt-get install npm
 RUN apt-get git
