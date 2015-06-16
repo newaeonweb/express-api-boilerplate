@@ -30,7 +30,7 @@ RUN apt-get install -y npm
 WORKDIR /home/express-api-boilerplate
 
 # Make everything available for start
-ADD . /home/frontendboilerplate
+ADD . /home/express-api-boilerplate
 
 # Port 3000 for server
 # Port 35729 for livereload
