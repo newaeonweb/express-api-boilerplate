@@ -40,4 +40,4 @@ ADD . /home/express-api-boilerplate
 # Port 35729 for livereload
 EXPOSE 3000 35729
 
-CMD [ "npm", "start" ]
+#CMD [ "npm", "start" ]
