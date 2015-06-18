@@ -29,4 +29,6 @@ ADD . /home/express-api-boilerplate
 # Port 3000 for server
 EXPOSE 3000 27017
 
+RUN cd .. && cd .. && cd usr && cd bin && mongod
+
 CMD [ "npm", "start" ]
