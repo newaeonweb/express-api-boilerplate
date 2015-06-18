@@ -14,6 +14,6 @@ CMD [ "npm", "start" ]
 EXPOSE 3000
 
 #How to run:
-docker pull mongo
-docker run -d --name db mongo
-docker run -p 3000:3000 --link db:db speakerdb
+RUN pull mongo
+RUN -d --name db mongo
+RUN -p 3000:3000 --link db:db speakerdb
