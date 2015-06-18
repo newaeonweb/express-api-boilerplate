@@ -1,23 +1,33 @@
-FROM ubuntu
-MAINTAINER Fernando Monteiro
+FROM       ubuntu:latest
 
-RUN apt-get install -y python-software-properties python python-setuptools ruby rubygems
-RUN add-apt-repository ppa:chris-lea/node.js
-RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ precise universe" >> /etc/apt/sources.list
-RUN apt-get update
+MAINTAINER Fernando Monteiro, fernando@newaeonweb.com.br
+
+# Installation:
+
+# Import MongoDB public GPG key AND create a MongoDB list file
+RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv 7F0CEB10
+RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
+
+# Update apt-get sources AND install MongoDB
+RUN apt-get update && apt-get install -y mongodb-org
+
+# Create the MongoDB data directory
+RUN mkdir -p /data/db
+
 RUN apt-get install -y nodejs
+RUN apt-get install nodejs-legacy
+RUN apt-get install -y npm
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-RUN echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
-RUN apt-get -y update
-RUN apt-get -y install mongodb-10gen
+WORKDIR /home/express-api-boilerplate
 
-RUN easy_install supervisor
-RUN echo_supervisord_conf > /etc/supervisord.conf
-RUN printf "[include]\nfiles = /var/www/Supervisorfile\n" >> /etc/supervisord.conf
+# Install packages
+ADD package.json /home/express-api-boilerplate/package.json
+RUN npm install
 
-ADD . /var/www
+# Make everything available for start
+ADD . /home/express-api-boilerplate
 
-RUN cd /var/www ; npm install
+# Port 3000 for server
+EXPOSE 3000 27017
 
-CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+#CMD [ "npm", "start" ]
