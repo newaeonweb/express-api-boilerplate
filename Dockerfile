@@ -6,7 +6,7 @@ WORKDIR /home/express-api-boilerplate
 
 # Install packages
 ADD package.json /home/express-api-boilerplate/package.json
-docker run npm install
+RUN npm install
 
 # Make everything available for start
 ADD . /home/express-api-boilerplate
