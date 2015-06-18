@@ -13,10 +13,6 @@ RUN apt-get update && apt-get install -y mongodb-org
 # Create the MongoDB data directory
 RUN mkdir -p /data/db
 
-
-# Set /usr/bin/mongod as the dockerized entry-point application
-ENTRYPOINT ["/usr/bin/mongod"]
-
 RUN apt-get install -y nodejs
 RUN apt-get install nodejs-legacy
 RUN apt-get install -y npm
