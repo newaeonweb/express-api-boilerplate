@@ -1,34 +1,23 @@
-FROM       ubuntu:latest
-MAINTAINER Fernando Monteiro, fernando@newaeonweb.com.br
+FROM    centos:centos6
 
-# Installation:
+# Enable EPEL for Node.js
+RUN     rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
-# Import MongoDB public GPG key AND create a MongoDB list file
-RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv 7F0CEB10
-RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
+# Install Node.js and npm
+RUN yum install -y npm
 
-# Update apt-get sources AND install MongoDB
-RUN apt-get update && apt-get install -y mongodb-org
+# Bundle app source
+COPY . /home/express-api-boilerplate
 
-# Create the MongoDB data directory
-RUN mkdir -p /data/db
-
-RUN apt-get install -y nodejs
-RUN apt-get install nodejs-legacy
-RUN apt-get install -y npm
-
+# Install app dependencies
 WORKDIR /home/express-api-boilerplate
 
-# Install packages
-ADD package.json /home/express-api-boilerplate/package.json
 RUN npm install
 
-# Make everything available for start
-ADD . /home/express-api-boilerplate
+ENV NODE_ENV production
 
-# Port 3000 for server
-EXPOSE 3000 27017
+EXPOSE 3000
 
-RUN cd .. && cd .. && cd usr && cd bin && mongod
+ENTRYPOINT ["node"]
 
-CMD [ "npm", "start" ]
+CMD ["server.js"]
