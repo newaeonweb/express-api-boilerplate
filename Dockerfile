@@ -1,5 +1,4 @@
 FROM       ubuntu:latest
-
 MAINTAINER Fernando Monteiro, fernando@newaeonweb.com.br
 
 # Installation:
@@ -13,6 +12,10 @@ RUN apt-get update && apt-get install -y mongodb-org
 
 # Create the MongoDB data directory
 RUN mkdir -p /data/db
+
+
+# Set /usr/bin/mongod as the dockerized entry-point application
+ENTRYPOINT ["/usr/bin/mongod"]
 
 RUN apt-get install -y nodejs
 RUN apt-get install nodejs-legacy
@@ -30,4 +33,4 @@ ADD . /home/express-api-boilerplate
 # Port 3000 for server
 EXPOSE 3000 27017
 
-#CMD [ "npm", "start" ]
+CMD [ "npm", "start" ]
