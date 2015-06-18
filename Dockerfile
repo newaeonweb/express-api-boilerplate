@@ -1,16 +1,23 @@
-FROM node:0.10-onbuild
+FROM ubuntu
+MAINTAINER Fernando Monteiro
 
-MAINTAINER Fernando Monteiro, fernando@newaeonweb.com.br
+RUN apt-get install -y python-software-properties python python-setuptools ruby rubygems
+RUN add-apt-repository ppa:chris-lea/node.js
+RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ precise universe" >> /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install -y nodejs
 
-WORKDIR /home/express-api-boilerplate
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+RUN echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
+RUN apt-get -y update
+RUN apt-get -y install mongodb-10gen
 
-# Install packages
-ADD package.json /home/express-api-boilerplate/package.json
-RUN npm install
+RUN easy_install supervisor
+RUN echo_supervisord_conf > /etc/supervisord.conf
+RUN printf "[include]\nfiles = /var/www/Supervisorfile\n" >> /etc/supervisord.conf
 
-# Make everything available for start
-ADD . /home/express-api-boilerplate
+ADD . /var/www
 
-# Port 3000 for server
-EXPOSE 3000
-CMD ["npm", "start"]
+RUN cd /var/www ; npm install
+
+CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
