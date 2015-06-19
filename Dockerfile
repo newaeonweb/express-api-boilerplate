@@ -21,3 +21,7 @@ EXPOSE 3000
 ENTRYPOINT ["node"]
 
 CMD ["server.js"]
+
+RUN mongo --name mongo
+
+RUN -d -p 3000:3000 --name express-api-boilerplate --link mongo:mongo newaeonweb/express-api-boilerplate
