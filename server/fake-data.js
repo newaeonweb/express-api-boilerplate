@@ -7,7 +7,7 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 // Connect to MongoDB
-var server = new Server('192.168.99.100', 27017, {auto_reconnect: true});
+var server = new Server('192.168.99.100', 32830, {auto_reconnect: true});
 // Create a new DB
 db = new Db('speakerdb', server, {safe: true});
 // Open db and check for a collection
