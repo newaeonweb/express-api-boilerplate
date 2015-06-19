@@ -1,27 +1,42 @@
-FROM    centos:centos6
+# Dockerizing MongoDB: Dockerfile for building MongoDB images
+# Based on ubuntu:latest, installs MongoDB following the instructions from:
+# http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 
-# Enable EPEL for Node.js
-RUN     rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+FROM       ubuntu:latest
+MAINTAINER Fernando Monteiro, fernando@newaeonweb.com.br
 
-# Install Node.js and npm
-RUN yum install -y npm
+# Installation:
 
-# Bundle app source
-COPY . /home/express-api-boilerplate
+# Import MongoDB public GPG key AND create a MongoDB list file
+RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv 7F0CEB10
+RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
 
-# Install app dependencies
+# Update apt-get sources AND install MongoDB
+RUN apt-get update && apt-get install -y mongodb-org
+
+# Create the MongoDB data directory
+RUN mkdir -p /data/db
+
+# Expose port #27017 from the container to the host
+EXPOSE 27017
+
+# Set /usr/bin/mongod as the dockerized entry-point application
+ENTRYPOINT ["/home/express-api-boilerplate"]
+
+RUN apt-get install -y nodejs
+RUN apt-get install nodejs-legacy
+RUN apt-get install -y npm
+
 WORKDIR /home/express-api-boilerplate
 
+# Install packages
+ADD package.json /home/express-api-boilerplate/package.json
 RUN npm install
 
-ENV NODE_ENV production
+# Make everything available for start
+ADD . /home/express-api-boilerplate
 
+# Port 3000 for server
 EXPOSE 3000
 
-ENTRYPOINT ["node"]
-
-CMD ["server.js"]
-
-RUN mongo --name mongo
-
-RUN -d -p 3000:3000 --name express-api-boilerplate --link mongo:mongo newaeonweb/express-api-boilerplate
+#CMD [ "npm", "start" ]
