@@ -21,22 +21,4 @@ RUN mkdir -p /data/db
 EXPOSE 27017
 
 # Set /usr/bin/mongod as the dockerized entry-point application
-ENTRYPOINT ["/home/express-api-boilerplate"]
-
-RUN apt-get install -y nodejs
-RUN apt-get install nodejs-legacy
-RUN apt-get install -y npm
-
-WORKDIR /home/express-api-boilerplate
-
-# Install packages
-ADD package.json /home/express-api-boilerplate/package.json
-RUN npm install
-
-# Make everything available for start
-ADD . /home/express-api-boilerplate
-
-# Port 3000 for server
-EXPOSE 3000
-
-#CMD [ "npm", "start" ]
+ENTRYPOINT ["/usr/bin/mongod"]
