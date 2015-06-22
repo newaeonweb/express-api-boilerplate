@@ -7,7 +7,7 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 // Connect to MongoDB
-var server = new Server('192.168.99.100', 32830, {auto_reconnect: true});
+var server = new Server('192.168.99.100', 32833, {auto_reconnect: true});
 // Create a new DB
 db = new Db('speakerdb', server, {safe: true});
 // Open db and check for a collection
@@ -16,9 +16,17 @@ db.open(function(err, db) {
         console.log("Connected to 'speakerdb' database");
 
         // Create a collection
-        var collection = db.collection('speakers');
-        // Populate new db
-        insertDataIntoCollection();
+        //var collection = db.collection('speakers');
+        db.collection('speakers', {strict:true}, function(err, collection) {
+            if(err) {
+                console.log("Creating some sample data...");
+                // Populate new db
+                insertDataIntoCollection();
+            } else {
+                console.log("Sample Data Already exist");
+            }
+
+        });
 
     } else {
         console.log(err);
@@ -222,7 +230,6 @@ var insertDataIntoCollection = function() {
         }];
 
     db.collection('speakers', function(err, collection) {
-        console.log('Inserting data into speakerdb');
         collection.insert(speakers, {safe:true}, function(err, result) {
             if(!err) {
                 console.log(result);
